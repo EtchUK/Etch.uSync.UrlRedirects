@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2019 # windows-2019 supports .net framework
 
     env:
       CONFIG: "Release"
@@ -17,6 +17,12 @@ jobs:
         uses: gittools/actions/gitversion/setup@v0.9.7
         with:
           versionSpec: "5.x"
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1.1
 
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,13 +41,16 @@ jobs:
           echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
 
       # ------------------------
-      # actual builds / packages
+      # build and package uSync packages
       # ------------------------
       - name: Restore
         run: dotnet restore ./src/uSync/Etch.uSync.UrlRedirects.sln
 
       - name: Build Etch.uSync.UrlRedirects
         run: dotnet pack ./src/uSync/Etch.uSync.UrlRedirects/Etch.uSync.UrlRedirects.csproj --no-restore -c ${{env.CONFIG}} --output ${{env.OUT_FOLDER}} /p:version=${{steps.gitversion.outputs.fullSemVer}}
+
+      - name: Build Etch.uSync.UrlRedirects.Skybrud
+        run: dotnet pack ./src/uSync/Etch.uSync.UrlRedirects.Skybrud/Etch.uSync.UrlRedirects.Skybrud.csproj --no-restore -c ${{env.CONFIG}} --output ${{env.OUT_FOLDER}} /p:version=${{steps.gitversion.outputs.fullSemVer}}
 
       - name: Upload nuget file as build artifact
         uses: actions/upload-artifact@v2
@@ -53,3 +62,17 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         run: |
           dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
+
+      # ------------------------
+      # build and package uSync Legacy packages
+      # ------------------------
+
+      - name: Restore dependencies
+        run: nuget restore ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects.sln
+
+      - name: Pack Etch.uSyncLegacy.UrlRedirects
+        run: nuget pack ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects/Etch.uSyncLegacy.UrlRedirects.csproj -Build -NonInteractive -OutputDirectory ${{env.OUT_FOLDER}} -Properties Configuration=${{env.CONFIG}} -Version ${{steps.gitversion.outputs.fullSemVer}} -Symbols
+
+      - name: Pack Etch.uSyncLegacy.UrlRedirects
+        run: nuget pack ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects.InfoCaster/Etch.uSyncLegacy.UrlRedirects.InfoCaster.csproj -Build -NonInteractive -OutputDirectory ${{env.OUT_FOLDER}} -Properties Configuration=${{env.CONFIG}} -Version ${{steps.gitversion.outputs.fullSemVer}} -Symbols
