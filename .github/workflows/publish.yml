@@ -1,0 +1,55 @@
+name: Package up and publish
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      CONFIG: "Release"
+      OUT_FOLDER: "./build.out/"
+
+    steps:
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: "5.x"
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Determine Version with GitVersion (MSBuild in Proj will do this)
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.15
+        with:
+          useConfigFile: true
+          configFilePath: ./GitVersion.yml
+
+      - name: Display GitVersion SemVer
+        run: |
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
+
+      # ------------------------
+      # actual builds / packages
+      # ------------------------
+      - name: Restore
+        run: dotnet restore ./src/uSync/Etch.uSync.UrlRedirects.sln
+
+      - name: Build Etch.uSync.UrlRedirects
+        run: dotnet pack ./src/uSync/Etch.uSync.UrlRedirects/Etch.uSync.UrlRedirects.csproj --no-restore -c ${{env.CONFIG}} --output ${{env.OUT_FOLDER}} /p:version=${{steps.gitversion.outputs.fullSemVer}}
+
+      - name: Upload nuget file as build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Nuget Build Output
+          path: ${{env.OUT_FOLDER}}
+
+      - name: Push to Etch MyGet Feed
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
