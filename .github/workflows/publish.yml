@@ -68,7 +68,7 @@ jobs:
       # build and package uSync Legacy packages
       # ------------------------
 
-      - name: Restore dependencies
+      - name: Restore Etch.uSyncLegacy.UrlRedirects dependencies
         run: nuget restore ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects.sln
 
       - name: Pack Etch.uSyncLegacy.UrlRedirects
@@ -76,3 +76,9 @@ jobs:
 
       - name: Pack Etch.uSyncLegacy.UrlRedirects
         run: nuget pack ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects.InfoCaster/Etch.uSyncLegacy.UrlRedirects.InfoCaster.csproj -Build -NonInteractive -OutputDirectory ${{env.OUT_FOLDER}} -Properties Configuration=${{env.CONFIG}} -Version ${{steps.gitversion.outputs.fullSemVer}} -Symbols
+
+      - name: Push Etch.uSyncLegacy.UrlRedirects to Etch MyGet Feed
+        if: ${{ github.event_name != 'pull_request' }}
+        run: |
+          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
