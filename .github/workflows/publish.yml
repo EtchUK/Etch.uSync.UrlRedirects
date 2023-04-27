@@ -58,11 +58,11 @@ jobs:
           name: Nuget Build Output
           path: ${{env.OUT_FOLDER}}
 
-      - name: Push to Etch MyGet Feed
+      - name: Push to Nuget
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
-          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
+          dotnet nuget push ${{env.OUT_FOLDER}}Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
+          dotnet nuget push ${{env.OUT_FOLDER}}Etch.uSync.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
 
       # ------------------------
       # build and package uSync Legacy packages
@@ -77,8 +77,8 @@ jobs:
       - name: Pack Etch.uSyncLegacy.UrlRedirects
         run: nuget pack ./src/uSyncLegacy/Etch.uSyncLegacy.UrlRedirects.InfoCaster/Etch.uSyncLegacy.UrlRedirects.InfoCaster.csproj -Build -NonInteractive -OutputDirectory ${{env.OUT_FOLDER}} -Properties Configuration=${{env.CONFIG}} -Version ${{steps.gitversion.outputs.fullSemVer}} -Symbols
 
-      - name: Push Etch.uSyncLegacy.UrlRedirects to Etch MyGet Feed
+      - name: Push Etch.uSyncLegacy.UrlRedirects to Nuget
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
-          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
+          nuget push ${{env.OUT_FOLDER}}Etch.uSyncLegacy.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGETAPIKEY }}
+          nuget push ${{env.OUT_FOLDER}}Etch.uSyncLegacy.UrlRedirects.InfoCaster.${{steps.gitversion.outputs.fullSemVer}}.nupkg -SkipDuplicate -Source https://api.nuget.org/v3/index.json -ApiKey ${{ secrets.NUGETAPIKEY }}
