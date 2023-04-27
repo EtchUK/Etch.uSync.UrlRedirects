@@ -4,6 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Authors>Michael Chart</Authors>
+    <Company>Etch</Company>
+    <Description>A uSync Handler for UrlRedirects. Useful in combination with the Etch.uSyncLegacy.UrlRedirects package for migrating URL Redirects from Umbraco 7 to 10+.</Description>
+    <RepositoryUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
