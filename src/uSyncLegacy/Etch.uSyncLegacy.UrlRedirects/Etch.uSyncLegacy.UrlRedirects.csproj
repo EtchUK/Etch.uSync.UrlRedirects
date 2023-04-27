@@ -21,6 +21,7 @@
     <Description>Provides an Umbraco 7 uSync (Legacy) Handler for exporting URL redirects. A UrlRedirectProvider package is also required, e.g. Etch.uSyncLegacy.UrlRedirects.InfoCaster.</Description>
     <RepositoryUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
