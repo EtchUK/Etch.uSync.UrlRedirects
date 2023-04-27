@@ -61,8 +61,8 @@ jobs:
       - name: Push to Etch MyGet Feed
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
-          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSync.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
 
       # ------------------------
       # build and package uSync Legacy packages
@@ -80,5 +80,5 @@ jobs:
       - name: Push Etch.uSyncLegacy.UrlRedirects to Etch MyGet Feed
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
-          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://www.myget.org/F/etchuk/api/v3/index.json --api-key ${{ secrets.MYGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
+          dotnet nuget push ./build.out/Etch.uSyncLegacy.UrlRedirects.Skybrud.${{steps.gitversion.outputs.fullSemVer}}.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGETAPIKEY }}
