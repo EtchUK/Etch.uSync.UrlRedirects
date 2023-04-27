@@ -10,6 +10,7 @@
     <RepositoryUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Etch.uSync.UrlRedirects\Etch.uSync.UrlRedirects.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>

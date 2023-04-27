@@ -19,6 +19,7 @@
     <RepositoryUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +59,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Etch.uSyncLegacy.UrlRedirects\Etch.uSyncLegacy.UrlRedirects.csproj">

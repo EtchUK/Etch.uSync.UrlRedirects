@@ -10,10 +10,15 @@
     <RepositoryUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</RepositoryUrl>
     <PackageProjectUrl>https://github.com/EtchUK/Etch.uSync.UrlRedirects</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="uSync.BackOffice" Version="10.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
